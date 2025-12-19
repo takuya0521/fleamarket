@@ -8,14 +8,14 @@
 
 ### Docker ビルド
 
--   git clone <リポジトリ URL>
+-   git clone https://github.com/takuya0521/fleamarket?tab=readme-ov-file
 -   docker compose up -d --build
 
 ### Laravel 環境構築
 
 -   docker compose exec laravel.test bash
 -   composer install
--   cp .env.example .env（必要に応じて .env を編集）
+-   cp .env.example .env
 -   php artisan key:generate
 -   php artisan migrate
 -   php artisan db:seed
@@ -42,8 +42,7 @@
 
 ## ER 図
 
--   docs/er.png（または docs/er.pdf）を参照
-    ![ER図](./docs/er.png)
+-   ![ER図](docs/er.png)
 
 ---
 
