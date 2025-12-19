@@ -1,0 +1,9 @@
+
+  GET|HEAD   sell ........................ sell.create › SellController@create
+  POST       sell .......................... sell.store › SellController@store
+  POST       sell/{item}/delete ........ sell.destroy › SellController@destroy
+  GET|HEAD   sell/{item}/edit ................ sell.edit › SellController@edit
+  POST       sell/{item}/update .......... sell.update › SellController@update
+
+                                                            Showing [5] routes
+

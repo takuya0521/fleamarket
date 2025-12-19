@@ -1,0 +1,17 @@
+resources/views/auth/login.blade.php
+resources/views/auth/register.blade.php
+resources/views/auth/verify-email.blade.php
+resources/views/auth/verify-notice.blade.php
+resources/views/items/index.blade.php
+resources/views/items/partials/card.blade.php
+resources/views/items/show.blade.php
+resources/views/layouts/app.blade.php
+resources/views/mypage/index.blade.php
+resources/views/mypage/partials/item_card.blade.php
+resources/views/mypage/profile.blade.php
+resources/views/purchase/address.blade.php
+resources/views/purchase/complete.blade.php
+resources/views/purchase/show.blade.php
+resources/views/sell/create.blade.php
+resources/views/sell/edit.blade.php
+resources/views/welcome.blade.php

@@ -1,0 +1,7 @@
+
+  GET|HEAD   mypage .................... mypage.index › MyPageController@index
+  GET|HEAD   mypage/profile ............ profile.edit › ProfileController@edit
+  POST       mypage/profile ........ profile.update › ProfileController@update
+
+                                                            Showing [3] routes
+

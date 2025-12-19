@@ -1,0 +1,43 @@
+==== app/Http/Requests/AddressRequest.php
+    public function rules(): array
+    {
+        return [
+            'shipping_postal_code' => ['required', 'regex:/^\d{7}$/'],
+            'shipping_address'     => ['required', 'string', 'max:255'],
+            'shipping_building'    => ['nullable', 'string', 'max:255'],
+        ];
+
+==== app/Http/Requests/CommentRequest.php
+    public function rules(): array
+    {
+        return [
+            'body' => ['required', 'string', 'max:255'],
+        ];
+
+==== app/Http/Requests/LoginRequest.php
+    public function rules(): array
+    {
+        return [
+            'email'    => ['required', 'email'],
+            'password' => ['required'],
+        ];
+
+==== app/Http/Requests/PurchaseRequest.php
+    public function rules(): array
+    {
+        return [
+            'payment_method' => ['required', 'string'],
+        ];
+
+==== app/Http/Requests/RegisterRequest.php
+    public function rules(): array
+    {
+        return [
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users', 'email')],
+            'password' => ['required', 'string', 'min:8'],
+            // 「確認用パスワード」は required にしない（未入力エラー文言が要件に無いので）
+            // 空でもパスワードが入っていれば same で落ちる → 「パスワードと一致しません」にできる
+            'password_confirmation' => ['same:password'],
+        ];
+

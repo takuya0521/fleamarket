@@ -1,0 +1,6 @@
+Category
+Comment
+Item
+Like
+Purchase
+User

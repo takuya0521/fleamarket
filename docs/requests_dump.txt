@@ -1,0 +1,169 @@
+AddressRequest.php
+CommentRequest.php
+LoginRequest.php
+PurchaseRequest.php
+RegisterRequest.php
+---
+### app/Http/Requests/AddressRequest.php
+<?php
+
+namespace App\Http\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class AddressRequest extends FormRequest
+{
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    protected function prepareForValidation(): void
+    {
+        $postal = $this->input('shipping_postal_code', $this->input('postal_code'));
+        $postal = is_string($postal) ? str_replace('-', '', $postal) : $postal;
+
+        $this->merge([
+            'shipping_postal_code' => $postal,
+            'shipping_address'     => $this->input('shipping_address', $this->input('address')),
+            'shipping_building'    => $this->input('shipping_building', $this->input('building')),
+        ]);
+    }
+
+    public function rules(): array
+    {
+        return [
+            'shipping_postal_code' => ['required', 'regex:/^\d{7}$/'],
+            'shipping_address'     => ['required', 'string', 'max:255'],
+            'shipping_building'    => ['nullable', 'string', 'max:255'],
+        ];
+    }
+}
+### app/Http/Requests/CommentRequest.php
+<?php
+
+namespace App\Http\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class CommentRequest extends FormRequest
+{
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    public function rules(): array
+    {
+        return [
+            'body' => ['required', 'string', 'max:255'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'body.required' => 'コメントを入力してください',
+            'body.max' => 'コメントは255文字以内で入力してください',
+        ];
+    }
+}
+
+### app/Http/Requests/LoginRequest.php
+<?php
+
+namespace App\Http\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class LoginRequest extends FormRequest
+{
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    public function rules(): array
+    {
+        return [
+            'email'    => ['required', 'email'],
+            'password' => ['required'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'email.required'    => 'メールアドレスを入力してください',
+            'password.required' => 'パスワードを入力してください',
+            'email.email'       => 'メールアドレスはメール形式で入力してください', // 要件に無ければ消してもOK
+        ];
+    }
+}
+
+### app/Http/Requests/PurchaseRequest.php
+<?php
+
+namespace App\Http\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class PurchaseRequest extends FormRequest
+{
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    public function rules(): array
+    {
+        return [
+            'payment_method' => ['required', 'string'],
+        ];
+    }
+}
+
+### app/Http/Requests/RegisterRequest.php
+<?php
+
+namespace App\Http\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+
+class RegisterRequest extends FormRequest
+{
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    public function rules(): array
+    {
+        return [
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users', 'email')],
+            'password' => ['required', 'string', 'min:8'],
+            // 「確認用パスワード」は required にしない（未入力エラー文言が要件に無いので）
+            // 空でもパスワードが入っていれば same で落ちる → 「パスワードと一致しません」にできる
+            'password_confirmation' => ['same:password'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'お名前を入力してください',
+
+            'email.required' => 'メールアドレスを入力してください',
+            'email.email'    => 'メールアドレスはメール形式で入力してください',
+
+            'password.required' => 'パスワードを入力してください',
+            'password.min'      => 'パスワードは8文字以上で入力してください',
+
+            'password_confirmation.same' => 'パスワードと一致しません',
+            'email.unique' => 'メールアドレスは既に使用されています',
+        ];
+    }
+}
+

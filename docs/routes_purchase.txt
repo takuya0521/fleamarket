@@ -1,0 +1,9 @@
+
+  GET|HEAD   purchase/address/{item} purchase.address.edit › PurchaseAddressC…
+  POST       purchase/address/{item} purchase.address.update › PurchaseAddres…
+  GET|HEAD   purchase/complete/{item} purchase.complete › PurchaseController@…
+  GET|HEAD   purchase/{item} ......... purchase.show › PurchaseController@show
+  POST       purchase/{item} ....... purchase.store › PurchaseController@store
+
+                                                            Showing [5] routes
+

@@ -1,0 +1,27 @@
+
+  GET|HEAD   / ............................ items.index › ItemController@index
+  POST       api/stripe/webhook ............... StripeWebhookController@handle
+  GET|HEAD   home ....................................................... home
+  GET|HEAD   item/{item} .................... items.show › ItemController@show
+  POST       item/{item}/comment ..... items.comment › CommentController@store
+  POST       item/{item}/like ............. items.like › LikeController@toggle
+  GET|HEAD   mypage .................... mypage.index › MyPageController@index
+  GET|HEAD   mypage/profile ............ profile.edit › ProfileController@edit
+  POST       mypage/profile ........ profile.update › ProfileController@update
+  GET|HEAD   purchase/address/{item} purchase.address.edit › PurchaseAddressC…
+  POST       purchase/address/{item} purchase.address.update › PurchaseAddres…
+  GET|HEAD   purchase/complete/{item} purchase.complete › PurchaseController@…
+  GET|HEAD   purchase/{item} ......... purchase.show › PurchaseController@show
+  POST       purchase/{item} ....... purchase.store › PurchaseController@store
+  GET|HEAD   sell ........................ sell.create › SellController@create
+  POST       sell .......................... sell.store › SellController@store
+  POST       sell/{item}/delete ........ sell.destroy › SellController@destroy
+  GET|HEAD   sell/{item}/edit ................ sell.edit › SellController@edit
+  POST       sell/{item}/update .......... sell.update › SellController@update
+  GET|HEAD   stripe/cancel/{item} .... stripe.cancel › StripeController@cancel
+  POST       stripe/checkout/{item} stripe.checkout › StripeController@checko…
+  GET|HEAD   stripe/success/{item} . stripe.success › StripeController@success
+  GET|HEAD   verify/notice .............................. verify.notice.custom
+
+                                                           Showing [23] routes
+
