@@ -2,64 +2,191 @@
 
 フリマアプリ（模擬案件）
 
-## 環境構築
+## 概要
 
--   Docker のビルドからマイグレーション、シーディングまでを記述する
-
-### Docker ビルド
-
--   git clone https://github.com/takuya0521/fleamarket?tab=readme-ov-file
--   docker compose up -d --build
-
-### Laravel 環境構築
-
--   docker compose exec laravel.test bash
--   composer install
--   cp .env.example .env
--   php artisan key:generate
--   php artisan migrate
--   php artisan db:seed
-
-### フロント（Vite / Tailwind）
-
--   npm install
--   npm run dev
-
-※ `WWWGROUP` / `WWWUSER` が未設定という WARNING が表示される場合がありますが、動作に問題がない場合はそのまま進めてください。
-
-## 開発環境
-
--   アプリ画面：http://localhost:8080/
--   フロント開発サーバ（Vite）：http://localhost:5174/
-
-## 使用技術（実行環境）
-
--   PHP 8.5.0
--   Laravel 12.42.0
--   MySQL 8.4.7
--   Docker / Docker Compose
--   Node.js / npm（Vite / Tailwind 利用のため必須）
-
-## ER 図
-
--   ![ER図](docs/er.png)
+Laravel / Docker / MySQL / Vite を用いて作成したフリマアプリです。
+会員登録、ログイン、商品一覧、商品詳細、いいね、コメント、購入、プロフィール編集、出品、取引機能などを実装しています。
 
 ---
 
-## トラブルシューティング（注意点）
+## 環境構築
 
-### create-testing-database.sh が原因で MySQL 初期化に失敗する場合
+### 1. リポジトリを clone
 
--   mysql サービスで `create-testing-database.sh` を `/docker-entrypoint-initdb.d/` にマウントしています。
--   マウント元のファイルが存在しない状態で起動すると、Docker 側でパスがディレクトリ扱いになることがあり、MySQL 初期化でエラーになる場合があります。
+```bash
+git clone https://github.com/takuya0521/fleamarket.git
+cd fleamarket
+```
 
-#### 確認
+### 2. `.env` ファイルを作成
 
--   下記で `create-testing-database.sh` がファイルとして存在することを確認してください。
-    -   ls -l ./vendor/laravel/sail/database/mysql/create-testing-database.sh
+```bash
+cp .env.example .env
+```
 
-#### 対処（必要な場合）
+### 3. Docker コンテナを起動
 
--   既に DB ボリュームが作成済みだと初期化スクリプトが再実行されないため、ボリューム削除後に再起動します。
-    -   docker compose down -v
-    -   docker compose up -d --build
+```bash
+docker compose up -d --build
+```
+
+### 4. Laravel 環境構築
+
+```bash
+docker compose exec laravel.test composer install
+docker compose exec laravel.test php artisan key:generate
+docker compose exec laravel.test php artisan migrate:fresh --seed
+docker compose exec laravel.test php artisan storage:link
+```
+
+### 5. フロントエンド環境構築
+
+```bash
+docker compose exec laravel.test npm install
+docker compose exec laravel.test npm run build
+```
+
+---
+
+## 開発環境
+
+- アプリ画面  
+  http://localhost:8080/
+
+- Mailpit  
+  http://localhost:8025/
+
+---
+
+## 使用技術（実行環境）
+
+- PHP 8.5.0
+- Laravel 12
+- MySQL 8.4
+- Docker / Docker Compose
+- Node.js / npm
+- Vite / Tailwind CSS
+
+---
+
+## 主な機能
+
+- 会員登録
+- ログイン / ログアウト
+- メール認証
+- 商品一覧表示
+- 商品詳細表示
+- 商品検索
+- いいね機能
+- コメント機能
+- 購入機能
+- 配送先住所変更
+- マイページ表示
+- 出品機能
+- 取引チャット機能
+- 取引完了 / 評価機能
+
+---
+
+## 取引機能の確認手順
+
+### 取引画面の確認方法
+
+1. 購入可能な商品を出品者とは別ユーザーで購入します。
+2. 購入後、マイページまたは取引一覧画面から対象取引を開きます。
+3. 取引詳細画面でメッセージ送信ができます。
+4. 購入者側で取引完了を行うと、出品者側で評価操作が可能になります。
+
+### 確認できる内容
+
+- 取引一覧表示
+- 取引詳細表示
+- メッセージ送信
+- 未読既読管理
+- 購入者の取引完了
+- 出品者の評価
+- 完了通知メール送信
+
+---
+
+## フロント開発サーバを利用する場合
+
+開発時に Vite の開発サーバを利用する場合は、以下を実行してください。
+
+```bash
+docker compose exec laravel.test npm run dev
+```
+
+Vite 開発サーバ:
+http://localhost:5174/
+
+---
+
+## ER図
+
+![ER図](docs/er.png)
+
+---
+
+## トラブルシューティング
+
+### `docker compose up -d --build` 実行時に build エラーになる場合
+
+本アプリでは、Sail の runtime を `vendor/laravel/sail` ではなく、プロジェクト配下の `docker/` ディレクトリから参照する構成にしています。  
+そのため、`compose.yaml` では以下のパスを利用しています。
+
+- `./docker/8.5`
+- `./docker/mysql/create-testing-database.sh`
+
+`docker/` ディレクトリが存在しない場合は、ファイルが正しく取得できていない可能性があるため、リポジトリを再取得してください。
+
+---
+
+### `WWWGROUP` / `WWWUSER` の WARNING が表示される場合
+
+環境によっては、`WWWGROUP` / `WWWUSER` 未設定の WARNING が表示される場合があります。  
+その場合は `.env` に以下を追記してください。
+
+```env
+WWWUSER=1000
+WWWGROUP=1000
+APP_PORT=8080
+VITE_PORT=5174
+FORWARD_DB_PORT=3307
+```
+
+設定後、以下を再実行してください。
+
+```bash
+docker compose down -v
+docker compose up -d --build
+```
+
+---
+
+### MySQL 初期化に失敗する場合
+
+既に DB ボリュームが作成済みだと、初期化スクリプトが再実行されないことがあります。  
+その場合は、ボリューム削除後に再起動してください。
+
+```bash
+docker compose down -v
+docker compose up -d --build
+```
+
+---
+
+### マイグレーションやシーディングで失敗する場合
+
+コンテナ起動後に、以下を順番に再実行してください。
+
+```bash
+docker compose exec laravel.test composer install
+docker compose exec laravel.test php artisan migrate:fresh --seed
+```
+
+---
+
+## 補足
+
+初回起動時は、Docker イメージの build や npm パッケージの install に少し時間がかかる場合があります。
