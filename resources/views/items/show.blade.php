@@ -55,12 +55,6 @@
     <a href="{{ route('items.index') }}">← 一覧へ戻る</a>
   </div>
 
-  @auth
-    <div style="color:#666; font-size:12px; margin-bottom:8px;">
-      login: {{ auth()->user()->email }} / seller_id: {{ $item->seller_id }} / my_id: {{ auth()->id() }}
-    </div>
-  @endauth
-
   <div class="detail">
     <div class="panel">
       <div class="thumb">

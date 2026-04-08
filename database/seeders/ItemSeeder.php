@@ -24,44 +24,96 @@ class ItemSeeder extends Seeder
             ['name' => '購入者花子', 'password' => Hash::make('password123')]
         );
 
-        $categories = Category::all();
-
         $items = [
             [
-                'name' => 'シンプルな腕時計',
-                'brand' => 'COACHTECH',
-                'description' => 'シンプルで使いやすい腕時計です。',
-                'price' => 5000,
-                'condition' => '目立った傷や汚れなし',
-                'image_path' => 'public/dummy.jpg',
+                'name' => '腕時計',
+                'brand' => null,
+                'description' => 'スタイリッシュなデザインのメンズ腕時計',
+                'price' => 15000,
+                'condition' => '良好',
+                'image_path' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/Armani+Mens+Clock.jpg',
                 'category_names' => ['ファッション'],
             ],
             [
-                'name' => 'ワイヤレスイヤホン',
-                'brand' => 'SOUND',
-                'description' => 'ノイズキャンセル対応のイヤホンです。',
-                'price' => 7800,
-                'condition' => 'やや傷や汚れあり',
-                'image_path' => 'public/dummy.jpg',
+                'name' => 'HDD',
+                'brand' => null,
+                'description' => '高速で信頼性の高いハードディスク',
+                'price' => 5000,
+                'condition' => '目立った傷や汚れなし',
+                'image_path' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/HDD+Hard+Disk.jpg',
                 'category_names' => ['家電'],
             ],
             [
-                'name' => '木製サイドテーブル',
-                'brand' => 'WOOD',
-                'description' => '部屋に馴染む木製テーブルです。',
-                'price' => 3200,
-                'condition' => '新品、未使用',
-                'image_path' => 'public/dummy.jpg',
+                'name' => '玉ねぎ3束',
+                'brand' => null,
+                'description' => '新鮮な玉ねぎ3束のセット',
+                'price' => 300,
+                'condition' => 'やや傷や汚れあり',
+                'image_path' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/iLoveIMG+d.jpg',
+                'category_names' => ['食品'],
+            ],
+            [
+                'name' => '革靴',
+                'brand' => null,
+                'description' => 'クラシックなデザインの革靴',
+                'price' => 4000,
+                'condition' => '状態が悪い',
+                'image_path' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/Leather+Shoes+Product+Photo.jpg',
+                'category_names' => ['ファッション'],
+            ],
+            [
+                'name' => 'ノートPC',
+                'brand' => null,
+                'description' => '高性能なノートパソコン',
+                'price' => 45000,
+                'condition' => '良好',
+                'image_path' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/Living+Room+Laptop.jpg',
+                'category_names' => ['家電'],
+            ],
+            [
+                'name' => 'マイク',
+                'brand' => null,
+                'description' => '高音質のレコーディング用マイク',
+                'price' => 8000,
+                'condition' => '目立った傷や汚れなし',
+                'image_path' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/Music+Mic+4632231.jpg',
+                'category_names' => ['家電'],
+            ],
+            [
+                'name' => 'ショルダーバッグ',
+                'brand' => null,
+                'description' => 'おしゃれなショルダーバッグ',
+                'price' => 3500,
+                'condition' => 'やや傷や汚れあり',
+                'image_path' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/Purse+fashion+pocket.jpg',
+                'category_names' => ['ファッション'],
+            ],
+            [
+                'name' => 'タンブラー',
+                'brand' => null,
+                'description' => '使いやすいタンブラー',
+                'price' => 500,
+                'condition' => '状態が悪い',
+                'image_path' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/Tumbler+souvenir.jpg',
                 'category_names' => ['インテリア'],
             ],
             [
-                'name' => 'デザイン入門書',
+                'name' => 'コーヒーミル',
                 'brand' => null,
-                'description' => 'デザインの基礎が学べる本です。',
-                'price' => 1200,
+                'description' => '手動のコーヒーミル',
+                'price' => 4000,
+                'condition' => '良好',
+                'image_path' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/Waitress+with+Coffee+Grinder.jpg',
+                'category_names' => ['インテリア'],
+            ],
+            [
+                'name' => 'メイクセット',
+                'brand' => null,
+                'description' => '便利なメイクアップセット',
+                'price' => 2500,
                 'condition' => '目立った傷や汚れなし',
-                'image_path' => 'public/dummy.jpg',
-                'category_names' => ['本・音楽・ゲーム'],
+                'image_path' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/%E5%A4%96%E5%87%BA%E3%83%A1%E3%82%A4%E3%82%AF%E3%82%A2%E3%83%83%E3%83%95%E3%82%9A%E3%82%BB%E3%83%83%E3%83%88.jpg',
+                'category_names' => ['ファッション'],
             ],
         ];
 
@@ -74,10 +126,9 @@ class ItemSeeder extends Seeder
                 ...$data,
             ]);
 
-            $attachIds = $categories
-                ->whereIn('name', $categoryNames)
-                ->pluck('id')
-                ->values()
+            // Seeder側でカテゴリが存在しない場合もあるので、無ければ作ってから紐付ける
+            $attachIds = collect($categoryNames)
+                ->map(fn ($name) => Category::firstOrCreate(['name' => $name])->id)
                 ->all();
 
             $item->categories()->attach($attachIds);

@@ -14,6 +14,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SellController;
 
 use App\Http\Controllers\StripeController;
+use App\Http\Controllers\TransactionController;
 
 /**
  * 公開：商品一覧 / 商品詳細
@@ -76,4 +77,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/stripe/checkout/{item}', [StripeController::class, 'checkout'])->name('stripe.checkout');
     Route::get('/stripe/success/{item}',  [StripeController::class, 'success'])->name('stripe.success');
     Route::get('/stripe/cancel/{item}',   [StripeController::class, 'cancel'])->name('stripe.cancel');
+});
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    // 取引チャット
+    Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
+    Route::get('/transactions/{purchase}', [TransactionController::class, 'show'])->name('transactions.show');
+    Route::post('/transactions/{purchase}/messages', [TransactionController::class, 'storeMessage'])->name('transactions.messages.store');
+    Route::post('/transactions/{purchase}/complete', [TransactionController::class, 'complete'])->name('transactions.complete');
+    Route::post('/transactions/{purchase}/rate/seller', [TransactionController::class, 'rateBySeller'])->name('transactions.rate.seller');
 });

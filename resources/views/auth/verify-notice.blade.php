@@ -15,7 +15,7 @@
     @if (session('status') === 'verification-link-sent')
       <div style="margin-top:10px; color:#0a7;">認証メールを再送しました。</div>
     @endif
-    <a class="btn primary" href="http://localhost:8026" target="_blank" rel="noopener">
+    <a class="btn primary" href="http://localhost:8025" target="_blank" rel="noopener">
         認証はこちらから（メールを確認）
     </a>
 
